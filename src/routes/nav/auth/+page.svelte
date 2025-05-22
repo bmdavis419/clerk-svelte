@@ -1,18 +1,17 @@
 <script lang="ts">
-	import { AuthStore } from './AuthStore.svelte';
+	import { getAuthStore } from '$lib/auth/client/AuthStore.svelte';
+	import SignIn from '$lib/auth/client/SignIn.svelte';
+	import UserProfile from '$lib/auth/client/UserProfile.svelte';
 
-	const authStore = new AuthStore();
+	const authStore = getAuthStore();
 
-	let signInDiv: HTMLDivElement;
-
-	$effect(() => {
-		if (authStore.isInitialized) {
-			// authStore.clerk.mountSignIn(signInDiv);
-		}
-	});
+	$inspect(authStore.user);
 </script>
 
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
-
-<!-- <div bind:this={signInDiv}></div> -->
+<div class="flex w-full items-center justify-center">
+	{#if authStore.user}
+		<UserProfile />
+	{:else}
+		<SignIn />
+	{/if}
+</div>
